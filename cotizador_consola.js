@@ -1,4 +1,4 @@
-// Variables 
+// ======= CONSTANTES DE NEGOCIO (IGUALES A TU CÓDIGO) =======
 const PRECIOS_WEB = {
   moduloNuevo: 220,
   ajusteModulo: 120,
@@ -9,111 +9,26 @@ const PRECIOS_WEB = {
   dashboard: 160,
   personalizacionDash: 200
 };
-// Margen comercial
-const MARGEN = 0.25;
 
+const MARGEN = 0.25; // margen comercial
+const STORAGE_KEY = "cotizacionesWideTech";
 
+// ======= FUNCIONES DE NEGOCIO =======
 function margenComercial(costo) {
   return Math.round(costo * MARGEN);
 }
 
-function pedirEnteroPositivo(etiqueta) {
-  while (true) {
-    const r = prompt(`${etiqueta}\n(ingresa un número entero ≥ 0)`);
-    if (r === null) return null;
-    const n = Number(String(r).trim());
-    if (Number.isInteger(n) && n >= 0) return n;
-    alert("Valor inválido. Intenta de nuevo.");
-  }
-}
-
-// Variables locales
-let nombreproyecto = "";
-let fechacotizacion = "";
-let componente = "";
-let idioma = "";
-let estado = "";
-
-// Entradas del “formulario inicio de proyecto"
-function pedirDatos() {
-  nombreproyecto = prompt("Nombre del proyecto:") || "";
-  fechacotizacion = prompt("Fecha de cotización (AAAA-MM-DD o texto):") || "";
-
-  const compIdx = prompt("Tipo de componente: \n1) web\n2) App\n3) Homologación de hardware\n(ingresa 1, 2 ó 3)");
-  componente = compIdx === "1" ? "web" : compIdx === "2" ? "App" : "Homologación de Hardware";
-
-  const idiIdx = prompt("Idioma del proyecto:\n1) único Idioma\n2) Bilingue\n3) Multilingue");
-  idioma = idiIdx === "1" ? "único Idioma" : idiIdx === "2" ? "Bilingue" : "Multilingue";
-
-  const estIdx = prompt("Estado del Proyecto : \n1) Idea\n2) Boceto\n3) En desarrollo");
-  estado = estIdx === "1" ? "Idea" : estIdx === "2" ? "Boceto" : "En desarrollo";
-}
-
-// Procesamiento + salida
-function mostrarResumen() {
-  pedirDatos();
-
-  console.clear();
-  console.log("==== RESUMEN DE INFORMACIÓN DEL PROYECTO ====");
-  console.log("Nombre del Proyecto: " + nombreproyecto);
-  console.log("Fecha de cotización :" + fechacotizacion);
-  console.log("componente:" + componente);
-  console.log("Idioma del proyecto:" + idioma);
-  console.log("Estado del proyecto:" + estado);
-
-  if (estado === "Idea") {
-    console.log("El proyecto aún está en fase de idea.");
-    alert("Atención: el proyecto aún está en fase de idea.");
-  } else {
-    console.log("El proyecto ya tiene un avance definido.");
-    alert("El proyecto ya tiene un avance definido.");
-  }
-
-  const datos = [nombreproyecto, fechacotizacion, componente, idioma, estado];
-  for (let i = 0; i < datos.length; i++) {
-    console.log("Dato " + (i + 1) + ": " + datos[i]);
-  }
-
-  const confirmar = confirm("¿Deseas guardar esta información del Proyecto?");
-  console.log(confirmar ? "Proyecto confirmado y guardado (simulado)." : "Proyecto no guardado.");
-}
-
-function validarCampos() {
-  if (nombreproyecto === "" || fechacotizacion === "") {
-    console.log("Faltan campos por llenar.");
-  } else {
-    console.log("Todos los campos principales fueron llenados.");
-  }
-}
-
-/* MÓDULO WEB  */
-// Entrada de datos al modulo web
-function pedirDatosWeb() {
-  const q = {
-    moduloNuevo:           pedirEnteroPositivo("WEB: ¿Cuántos MÓDULOS FUNCIONALES NUEVOS?"),
-    ajusteModulo:          pedirEnteroPositivo("WEB: ¿Cuántos AJUSTES de MÓDULOS actuales?"),
-    funcionalidadNueva:    pedirEnteroPositivo("WEB: ¿Cuántas FUNCIONALIDADES NUEVAS?"),
-    ajusteFuncionalidad:   pedirEnteroPositivo("WEB: ¿Cuántos AJUSTES de FUNCIONALIDADES actuales?"),
-    configBackoffice:      pedirEnteroPositivo("WEB: ¿Cuántos AJUSTES de CONFIGURACIÓN en Backoffice?"),
-    reporte:               pedirEnteroPositivo("WEB: ¿Cuántos REPORTES?"),
-    dashboard:             pedirEnteroPositivo("WEB: ¿Cuántos DASHBOARDS?"),
-    personalizacionDash:   pedirEnteroPositivo("WEB: ¿Cuántas PERSONALIZACIONES de dashboards (paquetes)?")
-  };
-  if (Object.values(q).some(v => v === null)) return null; // si cancelan, se sale
-  return q;
-}
-
-// Proceso calculo web 
+// cálculo WEB (reutilizado de tu código original)
 function calcularWeb(q) {
   const items = [
-    { nombre: "Módulos nuevos",                cantidad: q.moduloNuevo,          precio: PRECIOS_WEB.moduloNuevo },
-    { nombre: "Ajustes de módulos",            cantidad: q.ajusteModulo,         precio: PRECIOS_WEB.ajusteModulo },
-    { nombre: "Funcionalidades nuevas",        cantidad: q.funcionalidadNueva,   precio: PRECIOS_WEB.funcionalidadNueva },
-    { nombre: "Ajustes de funcionalidades",    cantidad: q.ajusteFuncionalidad,  precio: PRECIOS_WEB.ajusteFuncionalidad },
-    { nombre: "Configs Backoffice",            cantidad: q.configBackoffice,     precio: PRECIOS_WEB.configBackoffice },
-    { nombre: "Reportes",                      cantidad: q.reporte,              precio: PRECIOS_WEB.reporte },
-    { nombre: "Dashboards",                    cantidad: q.dashboard,            precio: PRECIOS_WEB.dashboard },
-    { nombre: "Personalización dashboards",    cantidad: q.personalizacionDash,  precio: PRECIOS_WEB.personalizacionDash }
+    { nombre: "Módulos nuevos",             cantidad: q.moduloNuevo,         precio: PRECIOS_WEB.moduloNuevo },
+    { nombre: "Ajustes de módulos",         cantidad: q.ajusteModulo,        precio: PRECIOS_WEB.ajusteModulo },
+    { nombre: "Funcionalidades nuevas",     cantidad: q.funcionalidadNueva,  precio: PRECIOS_WEB.funcionalidadNueva },
+    { nombre: "Ajustes de funcionalidades", cantidad: q.ajusteFuncionalidad, precio: PRECIOS_WEB.ajusteFuncionalidad },
+    { nombre: "Configs Backoffice",         cantidad: q.configBackoffice,    precio: PRECIOS_WEB.configBackoffice },
+    { nombre: "Reportes",                   cantidad: q.reporte,             precio: PRECIOS_WEB.reporte },
+    { nombre: "Dashboards",                 cantidad: q.dashboard,           precio: PRECIOS_WEB.dashboard },
+    { nombre: "Personalización dashboards", cantidad: q.personalizacionDash, precio: PRECIOS_WEB.personalizacionDash }
   ];
 
   let costoOperativo = 0;
@@ -127,62 +42,152 @@ function calcularWeb(q) {
   return { items, costoOperativo, costoComercial, total };
 }
 
-// Salida
-function mostrarResumenWeb(detalle) {
-  console.log("========== WEB: DETALLE ==========");
-  for (let i = 0; i < detalle.items.length; i++) {
-    const it = detalle.items[i];
-    if (it.cantidad > 0) {
-      console.log(`• ${it.nombre}: ${it.cantidad} x $${it.precio} = $${it.cantidad * it.precio}`);
+// ======= LECTURA DEL FORMULARIO =======
+function leerProyectoDesdeForm() {
+  const nombreProyecto = document.getElementById("nombreProyecto").value.trim();
+  const fechaCotizacion = document.getElementById("fechaCotizacion").value;
+
+  const componenteSel = document.querySelector('input[name="componente"]:checked');
+  const idiomaSel = document.querySelector('input[name="idioma"]:checked');
+  const estadoSel = document.querySelector('input[name="estado"]:checked');
+
+  return {
+    nombreProyecto,
+    fechaCotizacion,
+    componente: componenteSel ? componenteSel.value : "",
+    idioma: idiomaSel ? idiomaSel.value : "",
+    estado: estadoSel ? estadoSel.value : ""
+  };
+}
+
+function leerWebDesdeForm() {
+  const getInt = (id) => {
+    const v = parseInt(document.getElementById(id).value, 10);
+    return Number.isNaN(v) || v < 0 ? 0 : v;
+  };
+
+  return {
+    moduloNuevo: getInt("web_moduloNuevo"),
+    ajusteModulo: getInt("web_ajusteModulo"),
+    funcionalidadNueva: getInt("web_funcionalidadNueva"),
+    ajusteFuncionalidad: getInt("web_ajusteFuncionalidad"),
+    configBackoffice: getInt("web_configBackoffice"),
+    reporte: getInt("web_reporte"),
+    dashboard: getInt("web_dashboard"),
+    personalizacionDash: getInt("web_personalizacionDash")
+  };
+}
+
+// ======= MOSTRAR RESULTADOS EN EL DOM =======
+function formatearMoneda(valor) {
+  return "$ " + valor.toLocaleString("es-CO");
+}
+
+function mostrarResumen(proyecto, webDetalle, totalGeneral) {
+  // datos del proyecto
+  document.getElementById("resNombre").textContent = proyecto.nombreProyecto;
+  document.getElementById("resFecha").textContent = proyecto.fechaCotizacion;
+  document.getElementById("resComponente").textContent = proyecto.componente;
+  document.getElementById("resIdioma").textContent = proyecto.idioma;
+  document.getElementById("resEstado").textContent = proyecto.estado;
+
+  const msgEstado = document.getElementById("resMensajeEstado");
+  if (proyecto.estado === "Idea") {
+    msgEstado.textContent = "El proyecto aún está en fase de idea.";
+  } else {
+    msgEstado.textContent = "El proyecto ya tiene un avance definido.";
+  }
+
+  // totales web
+  document.getElementById("resCostoOperativoWeb").textContent = formatearMoneda(webDetalle.costoOperativo);
+  document.getElementById("resCostoComercialWeb").textContent = formatearMoneda(webDetalle.costoComercial);
+  document.getElementById("resTotalWeb").textContent = formatearMoneda(webDetalle.total);
+
+  // total general (por ahora solo WEB)
+  document.getElementById("resTotalProyecto").textContent = formatearMoneda(totalGeneral);
+}
+
+// ======= LOCALSTORAGE =======
+function obtenerCotizaciones() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return [];
+  try {
+    return JSON.parse(raw);
+  } catch (e) {
+    return [];
+  }
+}
+
+function guardarCotizacion(proyecto, webDetalle, totalGeneral) {
+  const lista = obtenerCotizaciones();
+  const nueva = {
+    id: Date.now(),
+    proyecto,
+    web: {
+      costoOperativo: webDetalle.costoOperativo,
+      costoComercial: webDetalle.costoComercial,
+      total: webDetalle.total
+    },
+    totalGeneral
+  };
+  lista.push(nueva);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+}
+
+function renderHistorial() {
+  const listaUl = document.getElementById("listaHistorial");
+  listaUl.innerHTML = "";
+
+  const cotizaciones = obtenerCotizaciones();
+  if (cotizaciones.length === 0) {
+    const li = document.createElement("li");
+    li.textContent = "No hay cotizaciones guardadas todavía.";
+    listaUl.appendChild(li);
+    return;
+  }
+
+  cotizaciones.forEach((coti) => {
+    const li = document.createElement("li");
+    const nombre = coti.proyecto.nombreProyecto || "Sin nombre";
+    const fecha = coti.proyecto.fechaCotizacion || "Sin fecha";
+    li.textContent = `${fecha} - ${nombre} - Total: ${formatearMoneda(coti.totalGeneral)}`;
+    listaUl.appendChild(li);
+  });
+}
+
+// ======= GESTIÓN DEL FORMULARIO (EVENTOS) =======
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("formProyecto");
+  const mensajeError = document.getElementById("mensajeError");
+  const mensajeGuardado = document.getElementById("mensajeGuardado");
+
+  renderHistorial(); // cargamos historial al abrir página
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    mensajeError.textContent = "";
+    mensajeGuardado.textContent = "";
+
+    const proyecto = leerProyectoDesdeForm();
+    const webDatos = leerWebDesdeForm();
+
+    // Validación mínima
+    if (!proyecto.nombreProyecto || !proyecto.fechaCotizacion) {
+      mensajeError.textContent = "Por favor, completa al menos Nombre del Proyecto y Fecha de Cotización.";
+      return;
     }
-  }
-  console.log("----------------------------------");
-  console.log("Costo Operativo Web: $" + detalle.costoOperativo);
-  console.log("Costo Comercial Web: $" + detalle.costoComercial);
-  console.log("TOTAL WEB: $" + detalle.total);
-  console.log("==================================\n");
 
-  alert(
-    "Resumen WEB (ver detalle en consola):\n" +
-    `Operativo: $${detalle.costoOperativo}\n` +
-    `Comercial: $${detalle.costoComercial}\n` +
-    `TOTAL: $${detalle.total}`
-  );
-}
+    // calcular web
+    const webDetalle = calcularWeb(webDatos);
+    const totalGeneral = webDetalle.total; // aquí luego podrías sumar App, Hardware, etc.
 
-// Funciones  Web
-function ejecutarModuloWeb() {
-  console.log("[WEB] pedirDatosWeb()");
-  const datos = pedirDatosWeb();
-  if (!datos) {
-    alert("Operación cancelada. No se calculará la sección Web.");
-    console.log("[WEB] Cancelado por el usuario.");
-    return null;
-  }
-  console.log("[WEB] calcularWeb()");
-  const detalle = calcularWeb(datos);
-  mostrarResumenWeb(detalle);
-  return detalle;
-}
+    // mostrar en el DOM
+    mostrarResumen(proyecto, webDetalle, totalGeneral);
 
-/* FLUJO GENERAL  */
-mostrarResumen();
-validarCampos();
+    // guardar en localStorage
+    guardarCotizacion(proyecto, webDetalle, totalGeneral);
+    renderHistorial();
 
-//console.clear();
-console.log("===== INFO DEL PROYECTO =====");
-let totalGeneral = 0;
-
-const incluirWeb = confirm("¿Deseas cotizar la parte Web?");
-if (incluirWeb) {
-  console.log("[FLUJO] Entrando a Módulo Web...");
-  const web = ejecutarModuloWeb();
-  if (web) totalGeneral += web.total;
-} else {
-  console.log("[FLUJO] Se omitió la sección Web.");
-}
-
-console.log("=========== RESUMEN ==========");
-console.log(`TOTAL ESTIMADO DEL PROYECTO: $${totalGeneral}`);
-console.log("==============================\n");
-alert(`TOTAL ESTIMADO DEL PROYECTO: $${totalGeneral}`);
+    mensajeGuardado.textContent = "Cotización calculada y guardada correctamente.";
+  });
+});
